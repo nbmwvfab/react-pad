@@ -3,33 +3,36 @@
  */
 import {combineReducers} from 'redux'
 import {
-    SET_HEAD_TITLE,
-    RECEIVE_USER,
+    SET_DEVICE_LIST,
+    SET_USER,
     RESET_USER
 } from './action-types'
 
-const initHeadTitle = ''
+const initDeviceList = []
 
-function headTitle(state = initHeadTitle, action) {
+function deviceList(state = initDeviceList, action) {
+    console.log(11,action)
     switch (action.type) {
-        case SET_HEAD_TITLE:
-            return action.data
+        case SET_DEVICE_LIST:
+            return action.deviceList
         default:
             return state
     }
 }
 const initUser = {}
 function user(state = initUser, action) {
+    console.log(22,action)
     switch (action.type) {
-        case RECEIVE_USER:
+        case SET_USER:
+            console.log(action.user)
             return action.user
         case RESET_USER:
-            return {}
+            return action.user
         default:
             return state
     }
 }
 export default combineReducers({
-    headTitle,
+    deviceList,
     user
 })

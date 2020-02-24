@@ -2,7 +2,7 @@
  *
 */
 import React, {Component} from 'react'
-import {reqLogin} from '../../api/index'
+import {login} from '../../redux/actions'
 import {
     Form,
     Icon,
@@ -17,48 +17,38 @@ import human from '../../assets/images/icon_human.png'
 import './login.less'
 
 const Item = Form.Item
+
 class Login extends Component {
+
+    state = {
+
+    }
 
     handleSubmit = () => {
         this.props.form.validateFields(async (err, values) => {
-           if (!err) {
-               const {userCode, password,orgig} = values
-               // this.props.login(username, password,orgig)
-               console.log(userCode, password,orgig)
-
-           }
-           else{
-             message.error("校验不通过")
-           }
+            if (!err) {
+                const {userCode,password,orgId} = values
+                this.props.login(userCode, password,orgId)
+            } else {
+                message.error("校验不通过")
+            }
 
         });
     }
 
-    componentDidMount() {
-
-        reqLogin({tranCode:"810001",
-            opCode:"01679802",
-            opBranchNo:"3115",
-            idCard:"412822199404262690",
-            mac:"00187db1c17b",
-            ip:"169.254.1.4",
-            hardwareInfo:"D362226F2DDC1445D0145076BA86E035",
-            secuKey:"46AF80532C90B2D9B90239DA9A81D859C6BF52ED92BF28F6199E332F2267AB5B7844F91C4DE95546CAF21832B616D2CAD232C68DDA6B23C00055032F60CCAE0C"})
-
-    }
 
     render() {
         const form = this.props.form
-        const { getFieldDecorator } = form;
+        const {getFieldDecorator} = form;
         const formItemLayout = {
             labelCol: {
-                xs: { span: 24 },
-                sm: { span: 8 },
-                style:{align:"middle",type:"flex",justify:"space-around"}
+                xs: {span: 24},
+                sm: {span: 8},
+                style: {align: "middle", type: "flex", justify: "space-around"}
             },
             wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 16 },
+                xs: {span: 24},
+                sm: {span: 16},
             },
         };
         const tailFormItemLayout = {
@@ -87,17 +77,18 @@ class Login extends Component {
                         <h2>员工登录</h2>
                     </span>
 
-                    <Form {...formItemLayout} className="login-form" >
-                        <Item label="员工工号" type="flex"  justify="space-around" align="middle">
+                    <Form {...formItemLayout} className="login-form">
+                        <Item label="员工工号" type="flex" justify="space-around" align="middle">
                             {
                                 getFieldDecorator('userCode', {
+                                    validateTrigger: 'onBlur',
                                     rules: [
-                                        { len: 6, message: '用户名为6位数字' },
-                                        { pattern: /^[0-9]+$/, message: '用户名必须是数字组成' },
+                                        {len: 6, message: '用户名为6位数字'},
+                                        {pattern: /^[0-9]+$/, message: '用户名必须是数字组成'},
                                     ],
                                 })(
                                     <Input
-                                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                        prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
 
                                         className="login-form-input"
 
@@ -107,11 +98,9 @@ class Login extends Component {
                         </Item>
                         <Item label="员工密码" type="flex" justify="space-around" align="middle">
                             {
-                                getFieldDecorator('password', {
-
-                                })(
+                                getFieldDecorator('password', {})(
                                     <Input
-                                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                        prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                         type="password"
                                         className="login-form-input"
 
@@ -120,21 +109,19 @@ class Login extends Component {
                             }
 
                         </Item>
-                        <Item label="员工机构号" type="flex"  justify="space-around" align="middle">
+                        <Item label="员工机构号" type="flex" justify="space-around" align="middle">
                             {
-                                getFieldDecorator('orgig', {
+                                getFieldDecorator('orgId', {})(
+                                    <Input
+                                        prefix={<Icon type="home" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                        className="login-form-input"
 
-                                })(
-                                <Input
-                                    prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)'}} />}
-                                    className="login-form-input"
-
-                                />
+                                    />
                                 )
                             }
 
                         </Item>
-                        <Item type="flex"  justify="space-around" align="middle" >
+                        <Item type="flex" justify="space-around" align="middle">
                             {getFieldDecorator('remember', {
                                 valuePropName: 'checked',
                                 initialValue: true,
@@ -143,10 +130,11 @@ class Login extends Component {
                         </Item>
                         <Item {...tailFormItemLayout}>
 
-                            <Button  className="login-form-button">
-                            退出
+                            <Button className="login-form-button">
+                                退出
                             </Button>
-                            <Button type="primary" size="large" onClick={this.handleSubmit} className="login-form-button">
+                            <Button type="primary" size="large" onClick={this.handleSubmit}
+                                    className="login-form-button">
                                 登陆
                             </Button>
 
@@ -158,7 +146,9 @@ class Login extends Component {
         )
     }
 }
+
 const WrapLogin = Form.create()(Login)
 export default connect(
-    state => ({user: state.user}),
+     null,
+    {login}
 )(WrapLogin)

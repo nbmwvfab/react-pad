@@ -6,7 +6,8 @@
 基本要求: 能根据接口文档定义接口请求函数
  */
 import ajax from './ajax'
+import '../mock/mockdata'
+const BASE = '/api/p'
 
-const BASE = '/api/p/common'
-
-export const reqLogin = ({tranCode, opCode,opBranchNo,idCard,mac,ip,hardwareInfo,secuKey}) => ajax(BASE, {tranCode, opCode,opBranchNo,idCard,mac,ip,hardwareInfo,secuKey}, 'POST')
+// export const reqQueryRoles = (userid) => ajax(BASE + '/common/', {tranCode:'LoginPermission', userid,jsbm:''}, 'POST')
+export const reqLoginBus = (userCode,password,branchNo) => ajax(BASE + '/customize/920001', {userCode,password,branchNo}, 'POST')
